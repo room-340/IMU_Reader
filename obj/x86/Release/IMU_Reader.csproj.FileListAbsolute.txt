@@ -1,0 +1,42 @@
+C:\Users\pec-orange\documents\visual studio 2010\Projects\IMU_Reader\IMU_Reader\bin\Release\IMU_Reader.exe
+C:\Users\pec-orange\documents\visual studio 2010\Projects\IMU_Reader\IMU_Reader\bin\Release\IMU_Reader.pdb
+C:\Users\pec-orange\documents\visual studio 2010\Projects\IMU_Reader\IMU_Reader\obj\x86\Release\ConfirmWindow.baml
+C:\Users\pec-orange\documents\visual studio 2010\Projects\IMU_Reader\IMU_Reader\obj\x86\Release\MainWindow.baml
+C:\Users\pec-orange\documents\visual studio 2010\Projects\IMU_Reader\IMU_Reader\obj\x86\Release\App.baml
+C:\Users\pec-orange\documents\visual studio 2010\Projects\IMU_Reader\IMU_Reader\obj\x86\Release\ConfirmWindow.g.cs
+C:\Users\pec-orange\documents\visual studio 2010\Projects\IMU_Reader\IMU_Reader\obj\x86\Release\MainWindow.g.cs
+C:\Users\pec-orange\documents\visual studio 2010\Projects\IMU_Reader\IMU_Reader\obj\x86\Release\App.g.cs
+C:\Users\pec-orange\documents\visual studio 2010\Projects\IMU_Reader\IMU_Reader\obj\x86\Release\IMU_Reader_MarkupCompile.cache
+C:\Users\pec-orange\documents\visual studio 2010\Projects\IMU_Reader\IMU_Reader\obj\x86\Release\IMU_Reader.g.resources
+C:\Users\pec-orange\documents\visual studio 2010\Projects\IMU_Reader\IMU_Reader\obj\x86\Release\IMU_Reader.Properties.Resources.resources
+C:\Users\pec-orange\documents\visual studio 2010\Projects\IMU_Reader\IMU_Reader\obj\x86\Release\IMU_Reader.csproj.GenerateResource.Cache
+C:\Users\pec-orange\documents\visual studio 2010\Projects\IMU_Reader\IMU_Reader\obj\x86\Release\IMU_Reader.exe
+C:\Users\pec-orange\documents\visual studio 2010\Projects\IMU_Reader\IMU_Reader\obj\x86\Release\IMU_Reader.pdb
+E:\IMU_Reader\IMU_Reader\bin\Release\IMU_Reader.exe
+E:\IMU_Reader\IMU_Reader\bin\Release\IMU_Reader.pdb
+E:\IMU_Reader\IMU_Reader\bin\Release\MathNet.Numerics.dll
+E:\IMU_Reader\IMU_Reader\obj\x86\Release\IMU_Reader.csprojResolveAssemblyReference.cache
+E:\IMU_Reader\IMU_Reader\obj\x86\Release\MainWindow.baml
+E:\IMU_Reader\IMU_Reader\obj\x86\Release\App.baml
+E:\IMU_Reader\IMU_Reader\obj\x86\Release\MainWindow.g.cs
+E:\IMU_Reader\IMU_Reader\obj\x86\Release\App.g.cs
+E:\IMU_Reader\IMU_Reader\obj\x86\Release\IMU_Reader_MarkupCompile.cache
+E:\IMU_Reader\IMU_Reader\obj\x86\Release\IMU_Reader.g.resources
+E:\IMU_Reader\IMU_Reader\obj\x86\Release\IMU_Reader.Properties.Resources.resources
+E:\IMU_Reader\IMU_Reader\obj\x86\Release\IMU_Reader.csproj.GenerateResource.Cache
+E:\IMU_Reader\IMU_Reader\obj\x86\Release\IMU_Reader.exe
+E:\IMU_Reader\IMU_Reader\obj\x86\Release\IMU_Reader.pdb
+L:\IMU_Reader\IMU_Reader\bin\Release\IMU_Reader.exe
+L:\IMU_Reader\IMU_Reader\bin\Release\IMU_Reader.pdb
+L:\IMU_Reader\IMU_Reader\bin\Release\MathNet.Numerics.dll
+L:\IMU_Reader\IMU_Reader\obj\x86\Release\IMU_Reader.csprojResolveAssemblyReference.cache
+L:\IMU_Reader\IMU_Reader\obj\x86\Release\MainWindow.baml
+L:\IMU_Reader\IMU_Reader\obj\x86\Release\App.baml
+L:\IMU_Reader\IMU_Reader\obj\x86\Release\MainWindow.g.cs
+L:\IMU_Reader\IMU_Reader\obj\x86\Release\App.g.cs
+L:\IMU_Reader\IMU_Reader\obj\x86\Release\IMU_Reader_MarkupCompile.cache
+L:\IMU_Reader\IMU_Reader\obj\x86\Release\IMU_Reader.g.resources
+L:\IMU_Reader\IMU_Reader\obj\x86\Release\IMU_Reader.Properties.Resources.resources
+L:\IMU_Reader\IMU_Reader\obj\x86\Release\IMU_Reader.csproj.GenerateResource.Cache
+L:\IMU_Reader\IMU_Reader\obj\x86\Release\IMU_Reader.exe
+L:\IMU_Reader\IMU_Reader\obj\x86\Release\IMU_Reader.pdb
