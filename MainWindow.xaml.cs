@@ -1,6 +1,6 @@
 ﻿// To Do List:
-// Откалиброванные блоки: 2, 4, 5, 7(\m), 8, 9, 10, 11(\m), 12(\m), 13, 14, 15
-// Пятый блок отколиброван в корридоре, все записи делать там же.
+// Откалиброванные блоки: 2, 4, 7(\m), 8, 9, 10, 11(\m), 12(\m), 13, 14, 15
+// Пятый НЕ ОТКАЛИБРОВАН.
 
 using System;
 using System.Collections.Generic;
@@ -27,7 +27,7 @@ namespace IMU_Reader
     /// </summary>
     public partial class MainWindow : Window
     {
-        string build_version = "0.8 Kalman";
+        string build_version = "0.81 Kalman";
         bool connected_to_port = false;
         int block_index = 0;
         SerialPort active_com = new SerialPort();
@@ -126,8 +126,8 @@ namespace IMU_Reader
                     Dispatcher.Invoke(new Action(() => button3.IsEnabled = true));
                     Dispatcher.Invoke(new Action(() => button1.BorderBrush = new SolidColorBrush(Colors.Orange)));
                     Dispatcher.Invoke(new Action(() => button1.Foreground = new SolidColorBrush(Colors.Orange)));
-                    Dispatcher.Invoke(new Action(() => button2.BorderBrush = active));
-                    Dispatcher.Invoke(new Action(() => button2.Foreground = active));
+                    Dispatcher.Invoke(new Action(() => button2.BorderBrush = inactive));
+                    Dispatcher.Invoke(new Action(() => button2.Foreground = inactive));
                     Dispatcher.Invoke(new Action(() => button3.BorderBrush = Red));
                     Dispatcher.Invoke(new Action(() => button3.Foreground = Red));
                     break;
@@ -593,9 +593,9 @@ namespace IMU_Reader
                 //mm[1] = m[i, 1];
                 //mm[2] = m[i, 2];
 
-                angles[0] = (AHRS_result.Item1.At(2));
+                angles[0] = (AHRS_result.Item1.At(0));
                 angles[1] = (AHRS_result.Item1.At(1));
-                angles[2] = (AHRS_result.Item1.At(0));
+                angles[2] = (AHRS_result.Item1.At(2));
                 //------------------------------------------------------------------------
            
                 // IMU
