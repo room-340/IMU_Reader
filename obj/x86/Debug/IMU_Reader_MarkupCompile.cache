@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-D:\Projects\IMU_Reader\obj\x86\Debug\
+C:\GitHub Projects\IMU_Reader\obj\x86\Debug\
 IMU_Reader
 none
 false
 DEBUG;TRACE
-D:\Projects\IMU_Reader\App.xaml
+C:\GitHub Projects\IMU_Reader\App.xaml
 11151548125
 
 71145236134
-131161346251
+13-826823243
 MainWindow.xaml;
 
 False

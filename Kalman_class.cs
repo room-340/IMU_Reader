@@ -28,7 +28,7 @@ public static class Kalman_class
             dT = (double)1/100;
             declination = (double)10 * Math.PI / 180;
             g = (double) 1;
-            accl_threshold = (double) 0.1;
+            accl_threshold = (double) 0.002;
             field = (double) 1;
             field_threshold = (double) 0.1;
             accl_coefs = Accl_coefs;
@@ -62,7 +62,6 @@ public static class Kalman_class
         public Matrix P;
         public Matrix dw;
         public Matrix dB;
-        public Matrix dG;
         public Matrix q;
 
         public State(double accl_noise, double magn_noise, double angle_noise, double bias_noise, double scale_noise, double skew_noise, Matrix Quat)
@@ -72,7 +71,7 @@ public static class Kalman_class
             
             R.At(2, 2, magn_noise);
             
-            Q = DenseMatrix.Create(15, 15, matrix_fill);                   
+            Q = DenseMatrix.Create(9, 9, matrix_fill);                   
             
             Q.At(0, 0, angle_noise);
             Q.At(1, 1, angle_noise);
@@ -86,15 +85,7 @@ public static class Kalman_class
             Q.At(7, 7, scale_noise);
             Q.At(8, 8, scale_noise);
 
-            Q.At(9, 9, skew_noise);
-            Q.At(10, 10, skew_noise);
-            Q.At(11, 11, skew_noise);
-
-            Q.At(12, 12, skew_noise);
-            Q.At(13, 13, skew_noise);
-            Q.At(14, 14, skew_noise);
-
-            P = DenseMatrix.Create(15, 15, matrix_fill);            
+            P = DenseMatrix.Create(9, 9, matrix_fill);            
 
             P.At(0, 0, (double)Math.Pow(10, -1));
             P.At(1, 1, (double)Math.Pow(10, -1));
@@ -108,19 +99,9 @@ public static class Kalman_class
             P.At(7, 7, (double)Math.Pow(10, -8));
             P.At(8, 8, (double)Math.Pow(10, -8));
 
-            P.At(9, 9, (double)Math.Pow(10, -8));
-            P.At(10, 10, (double)Math.Pow(10, -8));
-            P.At(11, 11, (double)Math.Pow(10, -8));
-
-            P.At(12, 12, (double)Math.Pow(10, -8));
-            P.At(13, 13, (double)Math.Pow(10, -8));
-            P.At(14, 14, (double)Math.Pow(10, -8));
-
             dw = DenseMatrix.Create(3, 1, matrix_fill);
 
             dB = DenseMatrix.Create(3, 1, matrix_fill);
-
-            dG = DenseMatrix.Create(6, 1, matrix_fill);
 
             q = Quat;          
         }
@@ -194,7 +175,6 @@ public static class Kalman_class
         // Get State
         Matrix q = State.q;
         Matrix dB = State.dB;
-        Matrix dG = State.dG;
         Matrix dw = State.dw;
         Matrix P = State.P;
 
@@ -206,13 +186,13 @@ public static class Kalman_class
         
         //Correct Gyroscopes for estimate biases and scale factor
         B.At(0, 0, dB.At(0, 0));
-        B.At(0, 1, dG.At(0, 0));
-        B.At(0, 2, dG.At(1, 0));
-        B.At(1, 0, dG.At(2, 0));
+        B.At(0, 1, 0);
+        B.At(0, 2, 0);
+        B.At(1, 0, 0);
         B.At(1, 1, dB.At(1, 0));
-        B.At(1, 2, dG.At(3, 0));
-        B.At(2, 0, dG.At(4, 0));
-        B.At(2, 1, dG.At(5, 0));
+        B.At(1, 2, 0);
+        B.At(2, 0, 0);
+        B.At(2, 1, 0);
         B.At(2, 2, dB.At(2, 0));
 
 
@@ -256,8 +236,8 @@ public static class Kalman_class
         double PsiMgn = (double)(-Math.Atan2(Mh.At(1,0),Mh.At(0,0)) + Param.declination);
 
         //System matrix
-        Matrix A = DenseMatrix.Create(15, 15, matrix_fill);
-        Matrix I = new DiagonalMatrix (15, 15, 1);
+        Matrix A = DenseMatrix.Create(9, 9, matrix_fill);
+        Matrix I = new DiagonalMatrix (9, 9, 1);
 
         A.At(0, 3, 1);
         A.At(1, 4, 1);
@@ -266,13 +246,6 @@ public static class Kalman_class
         A.At(0, 6, 1);
         A.At(1, 7, 1);
         A.At(2, 8, 1);
-
-        A.At(0, 9, Omegab_ib.At(1, 0));
-        A.At(0, 10, Omegab_ib.At(2, 0));
-        A.At(1, 11, Omegab_ib.At(0, 0));                
-        A.At(1, 12, Omegab_ib.At(2, 0));
-        A.At(2, 13, Omegab_ib.At(0, 0));
-        A.At(2, 14, Omegab_ib.At(1, 0));
 
         Matrix F = Matrix_Plus(I, Matrix_Const_Mult(A,dT));
 
@@ -296,7 +269,7 @@ public static class Kalman_class
         z.At(1, 0, dTheta);
         z.At(2, 0, dPsi);
 
-        Matrix H = DenseMatrix.Create(3,15,matrix_fill);
+        Matrix H = DenseMatrix.Create(3,9,matrix_fill);
         H.At(0, 0, 1);
         H.At(1, 1, 1);
         H.At(2, 2, 1); // MAGNETOMETER CORRECTION
@@ -311,6 +284,7 @@ public static class Kalman_class
         {
             H.At(2, 2, 0);
         }
+        H.At(2, 2, 0);
 
         //Kalman Filter
         Matrix Q = State.Q;
@@ -320,7 +294,7 @@ public static class Kalman_class
         
         if (P.At(0, 0).ToString() == "NaN")
         {
-            P = new DiagonalMatrix(15, 15, (double)Math.Pow(10, -8));
+            P = new DiagonalMatrix(9, 9, (double)Math.Pow(10, -8));
 
             P.At(0, 0, (double)Math.Pow(10, -1));
             P.At(1, 1, (double)Math.Pow(10, -1));
@@ -351,17 +325,9 @@ public static class Kalman_class
         dB_hat.At(0, 0, xf.At(6, 0));
         dB_hat.At(1, 0, xf.At(7, 0));
         dB_hat.At(2, 0, xf.At(8, 0));
-        Matrix dG_hat = DenseMatrix.Create(6,1,matrix_fill);
-        dG_hat.At(0, 0, xf.At(9, 0));
-        dG_hat.At(1, 0, xf.At(10, 0));
-        dG_hat.At(2, 0, xf.At(11, 0));
-        dG_hat.At(3, 0, xf.At(12, 0));
-        dG_hat.At(4, 0, xf.At(13, 0));
-        dG_hat.At(5, 0, xf.At(14, 0));
 
         dw = Matrix_Plus(dw, dw_hat);
         dB = Matrix_Plus(dB, dB_hat);
-        dG = Matrix_Plus(dG, dG_hat);
 
 
 
@@ -403,14 +369,12 @@ public static class Kalman_class
         Attitude.At(5, GammaAcc);
 
         State.q = q;
-        State.dG = dG;
         State.dB = dB;
         State.dw = dw;
         State.P = P;
 
-
         Sense.w = Matrix_Transpose(Omegab_ib);
-        Sense.a = a;
+        Sense.a = Matrix_Mult(a, quat_to_DCM(q));
         Sense.m = m;
 
         if (restart)

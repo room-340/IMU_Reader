@@ -419,7 +419,7 @@ namespace IMU_Reader
                             buffer[0] = pack[5]; buffer[1] = pack[6];
                             a[k, 1] = (double)BitConverter.ToInt16(buffer, 0) * 0.001766834114354 *corr_accl[block_index - 1];
                             buffer[0] = pack[9]; buffer[1] = pack[10];
-                            a[k, 2] = (double)BitConverter.ToInt16(buffer, 0) * 0.001766834114354 *corr_accl[block_index - 1];
+                            a[k, 2] = -(double)BitConverter.ToInt16(buffer, 0) * 0.001766834114354 *corr_accl[block_index - 1];
 
                             buffer[0] = pack[13]; buffer[1] = pack[14];
                             w[k, 0] = (double)BitConverter.ToInt16(buffer, 0) * 0.00053264 *corr_gyr[block_index - 1];
@@ -582,6 +582,10 @@ namespace IMU_Reader
 
                 AHRS_result = Kalman_class.AHRS_LKF_EULER(Sensors, State, Parameters);
                 State = AHRS_result.Item3;
+
+                ma[0] = AHRS_result.Item2.a[0, 0];
+                ma[1] = AHRS_result.Item2.a[0, 1];
+                ma[2] = AHRS_result.Item2.a[0, 2];
 
                 //mw[0] = w[i, 0];
                 //mw[1] = w[i, 1];

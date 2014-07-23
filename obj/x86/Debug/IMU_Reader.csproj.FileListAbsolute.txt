@@ -70,3 +70,16 @@ D:\Projects\IMU_Reader\obj\x86\Debug\IMU_Reader_MarkupCompile.cache
 D:\Projects\IMU_Reader\obj\x86\Debug\IMU_Reader.g.resources
 D:\Projects\IMU_Reader\obj\x86\Debug\IMU_Reader.Properties.Resources.resources
 D:\Projects\IMU_Reader\obj\x86\Debug\IMU_Reader.csproj.GenerateResource.Cache
+C:\GitHub Projects\IMU_Reader\obj\x86\Debug\IMU_Reader.exe
+C:\GitHub Projects\IMU_Reader\obj\x86\Debug\IMU_Reader.pdb
+C:\GitHub Projects\IMU_Reader\bin\Debug\IMU_Reader.exe
+C:\GitHub Projects\IMU_Reader\bin\Debug\IMU_Reader.pdb
+C:\GitHub Projects\IMU_Reader\obj\x86\Debug\IMU_Reader.csprojResolveAssemblyReference.cache
+C:\GitHub Projects\IMU_Reader\obj\x86\Debug\MainWindow.baml
+C:\GitHub Projects\IMU_Reader\obj\x86\Debug\App.baml
+C:\GitHub Projects\IMU_Reader\obj\x86\Debug\MainWindow.g.cs
+C:\GitHub Projects\IMU_Reader\obj\x86\Debug\App.g.cs
+C:\GitHub Projects\IMU_Reader\obj\x86\Debug\IMU_Reader_MarkupCompile.cache
+C:\GitHub Projects\IMU_Reader\obj\x86\Debug\IMU_Reader.g.resources
+C:\GitHub Projects\IMU_Reader\obj\x86\Debug\IMU_Reader.Properties.Resources.resources
+C:\GitHub Projects\IMU_Reader\obj\x86\Debug\IMU_Reader.csproj.GenerateResource.Cache
