@@ -27,7 +27,7 @@ namespace IMU_Reader
     /// </summary>
     public partial class MainWindow : Window
     {
-        string build_version = "0.81 Kalman";
+        string build_version = "0.82 Kalman (basic axis)";
         bool connected_to_port = false;
         int block_index = 0;
         SerialPort active_com = new SerialPort();
@@ -392,9 +392,24 @@ namespace IMU_Reader
             double[] corr_accl = {   1, 0.9778, 1, 0.8928, 1.3899,
                                      1, 0.9722, 0.9766, 0.9599, 0.9379,
                                      0.9183, 0.9924, 1.2657, 0.9892, 0.9598 };
-            double[] corr_gyr = {     1, 1.2430, 1, 1.1741, 1.5827,
-                                      1, 1.1772, 1.2536, 1.1414, 1.1605,
-                                      1.1028, 1.1981, 1.5859, 1.2025, 1.1084 };
+            double[,] corr_gyr = {   {1, 1, 1, 1, 1, 1, 1, 1, 1}, // 1
+                                     {1, 1, 1, 1, 1, 1, 1, 1, 1}, // 2
+                                     {1, 1, 1, 1, 1, 1, 1, 1, 1}, // 3
+                                     {1, 1, 1, 1, 1, 1, 1, 1, 1}, // 4
+                                     {-0.00373042367688305, 1.4558979622744, -0.0258818845609887, 0.00460253725775466, 1.4522057450117,
+                                         -0.035372440971534, -0.00301630637615598, 1.46124337866467, 0.0112681875599293}, // 5
+                                     {1, 1, 1, 1, 1, 1, 1, 1, 1}, // 6
+                                     {1, 1, 1, 1, 1, 1, 1, 1, 1}, // 7
+                                     {1, 1, 1, 1, 1, 1, 1, 1, 1}, // 8
+                                     {1, 1, 1, 1, 1, 1, 1, 1, 1}, // 9
+                                     {1, 1, 1, 1, 1, 1, 1, 1, 1}, // 10
+                                     {1, 1, 1, 1, 1, 1, 1, 1, 1}, // 11
+                                     {1, 1, 1, 1, 1, 1, 1, 1, 1}, // 12
+                                     {1, 1, 1, 1, 1, 1, 1, 1, 1}, // 13
+                                     {1, 1, 1, 1, 1, 1, 1, 1, 1}, // 14
+                                     {1, 1, 1, 1, 1, 1, 1, 1, 1}, // 15
+                  }; // Gyro correction coeffs are listed in XYZ order
+
            addText("\n" + get_time() + " Начало сохранения файла...");
             for (int i = 0; i < full_file.Length - 30; i++)
             {
@@ -422,11 +437,14 @@ namespace IMU_Reader
                             a[k, 2] = -(double)BitConverter.ToInt16(buffer, 0) * 0.001766834114354 *corr_accl[block_index - 1];
 
                             buffer[0] = pack[13]; buffer[1] = pack[14];
-                            w[k, 0] = (double)BitConverter.ToInt16(buffer, 0) * 0.00053264 *corr_gyr[block_index - 1];
+                            w[k, 0] = (double)BitConverter.ToInt16(buffer, 0) * 0.00053264;
                             buffer[0] = pack[11]; buffer[1] = pack[12];
-                            w[k, 1] = (double)BitConverter.ToInt16(buffer, 0) * 0.00053264 *corr_gyr[block_index - 1];
+                            w[k, 1] = (double)BitConverter.ToInt16(buffer, 0) * 0.00053264;
                             buffer[0] = pack[15]; buffer[1] = pack[16];
-                            w[k, 2] = -(double)BitConverter.ToInt16(buffer, 0) * 0.00053264 *corr_gyr[block_index - 1];
+                            w[k, 2] = -(double)BitConverter.ToInt16(buffer, 0) * 0.00053264;
+                            w[k, 0] = corr_gyr[block_index - 1, 0] * Math.Pow(w[k, 0], 2) + corr_gyr[block_index - 1, 1] * w[k, 0] + corr_gyr[block_index - 1, 2];
+                            w[k, 1] = corr_gyr[block_index - 1, 3] * Math.Pow(w[k, 1], 2) + corr_gyr[block_index - 1, 4] * w[k, 1] + corr_gyr[block_index - 1, 5];
+                            w[k, 2] = corr_gyr[block_index - 1, 6] * Math.Pow(w[k, 2], 2) + corr_gyr[block_index - 1, 7] * w[k, 2] + corr_gyr[block_index - 1, 8];
 
                             buffer[0] = pack[17]; buffer[1] = pack[18];
                             m[k, 0] = ((double)BitConverter.ToInt16(buffer, 0) * 0.00030518) * corr_mag[block_index - 1];
@@ -583,9 +601,9 @@ namespace IMU_Reader
                 AHRS_result = Kalman_class.AHRS_LKF_EULER(Sensors, State, Parameters);
                 State = AHRS_result.Item3;
 
-                ma[0] = AHRS_result.Item2.a[0, 0];
-                ma[1] = AHRS_result.Item2.a[0, 1];
-                ma[2] = AHRS_result.Item2.a[0, 2];
+                //ma[0] = AHRS_result.Item2.a[0, 0];
+                //ma[1] = AHRS_result.Item2.a[0, 1];
+                //ma[2] = AHRS_result.Item2.a[0, 2];
 
                 //mw[0] = w[i, 0];
                 //mw[1] = w[i, 1];
