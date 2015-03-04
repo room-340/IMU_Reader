@@ -27,7 +27,7 @@ namespace IMU_Reader
     /// </summary>
     public partial class MainWindow : Window
     {
-        string build_version = "0.82 Kalman (basic axis)";
+        string build_version = "0.821 Kalman (basic axis)"; // fixed calibration for blocks with index >= 16
         bool connected_to_port = false;
         int block_index = 0;
         SerialPort active_com = new SerialPort();
@@ -409,7 +409,17 @@ namespace IMU_Reader
                                      {1, 1, 1, 1, 1, 1, 1, 1, 1}, // 14
                                      {1, 1, 1, 1, 1, 1, 1, 1, 1}, // 15
                   }; // Gyro correction coeffs are listed in XYZ order
-
+            double accl_scale = 0;
+            if (block_index < 16)
+                accl_scale = corr_accl[block_index - 1];
+            double mag_scale = 0;
+            if (block_index < 16)
+                mag_scale = corr_mag[block_index - 1];
+            double[] gyr_scale = new double[9];
+            if (block_index < 16)
+                for (int t = 0; t < 9; t++)
+                    gyr_scale[t] = corr_gyr[block_index - 1, t];
+            
            addText("\n" + get_time() + " Начало сохранения файла...");
             for (int i = 0; i < full_file.Length - 30; i++)
             {
@@ -430,11 +440,11 @@ namespace IMU_Reader
                         if (type[k] == 49)
                         {
                             buffer[0] = pack[7]; buffer[1] = pack[8];
-                            a[k, 0] = ((double)BitConverter.ToInt16(buffer, 0)) * 0.001766834114354 *corr_accl[block_index - 1];
+                            a[k, 0] = ((double)BitConverter.ToInt16(buffer, 0)) * 0.001766834114354 *accl_scale;
                             buffer[0] = pack[5]; buffer[1] = pack[6];
-                            a[k, 1] = (double)BitConverter.ToInt16(buffer, 0) * 0.001766834114354 *corr_accl[block_index - 1];
+                            a[k, 1] = (double)BitConverter.ToInt16(buffer, 0) * 0.001766834114354 *accl_scale;
                             buffer[0] = pack[9]; buffer[1] = pack[10];
-                            a[k, 2] = -(double)BitConverter.ToInt16(buffer, 0) * 0.001766834114354 *corr_accl[block_index - 1];
+                            a[k, 2] = -(double)BitConverter.ToInt16(buffer, 0) * 0.001766834114354 *accl_scale;
 
                             buffer[0] = pack[13]; buffer[1] = pack[14];
                             w[k, 0] = (double)BitConverter.ToInt16(buffer, 0) * 0.00053264;
@@ -442,16 +452,16 @@ namespace IMU_Reader
                             w[k, 1] = (double)BitConverter.ToInt16(buffer, 0) * 0.00053264;
                             buffer[0] = pack[15]; buffer[1] = pack[16];
                             w[k, 2] = -(double)BitConverter.ToInt16(buffer, 0) * 0.00053264;
-                            w[k, 0] = corr_gyr[block_index - 1, 0] * Math.Pow(w[k, 0], 2) + corr_gyr[block_index - 1, 1] * w[k, 0] + corr_gyr[block_index - 1, 2];
-                            w[k, 1] = corr_gyr[block_index - 1, 3] * Math.Pow(w[k, 1], 2) + corr_gyr[block_index - 1, 4] * w[k, 1] + corr_gyr[block_index - 1, 5];
-                            w[k, 2] = corr_gyr[block_index - 1, 6] * Math.Pow(w[k, 2], 2) + corr_gyr[block_index - 1, 7] * w[k, 2] + corr_gyr[block_index - 1, 8];
+                            w[k, 0] = gyr_scale[0] * Math.Pow(w[k, 0], 2) + gyr_scale[1] * w[k, 0] + gyr_scale[2];
+                            w[k, 1] = gyr_scale[3] * Math.Pow(w[k, 1], 2) + gyr_scale[4] * w[k, 1] + gyr_scale[5];
+                            w[k, 2] = gyr_scale[6] * Math.Pow(w[k, 2], 2) + gyr_scale[7] * w[k, 2] + gyr_scale[8];
 
                             buffer[0] = pack[17]; buffer[1] = pack[18];
-                            m[k, 0] = ((double)BitConverter.ToInt16(buffer, 0) * 0.00030518) * corr_mag[block_index - 1];
+                            m[k, 0] = ((double)BitConverter.ToInt16(buffer, 0) * 0.00030518) * mag_scale;
                             buffer[0] = pack[19]; buffer[1] = pack[20];
-                            m[k, 1] = -((double)BitConverter.ToInt16(buffer, 0) * 0.00030518) * corr_mag[block_index - 1];
+                            m[k, 1] = -((double)BitConverter.ToInt16(buffer, 0) * 0.00030518) * mag_scale;
                             buffer[0] = pack[21]; buffer[1] = pack[22];
-                            m[k, 2] = ((double)BitConverter.ToInt16(buffer, 0) * 0.00030518) * corr_mag[block_index - 1];
+                            m[k, 2] = ((double)BitConverter.ToInt16(buffer, 0) * 0.00030518) * mag_scale;
 
                             buffer[0] = pack[23]; buffer[1] = pack[24];
                             q[k, 0] = (double)BitConverter.ToInt16(buffer, 0);
