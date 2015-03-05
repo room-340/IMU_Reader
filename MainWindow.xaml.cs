@@ -27,7 +27,9 @@ namespace IMU_Reader
     /// </summary>
     public partial class MainWindow : Window
     {
-        string build_version = "0.821 Kalman (basic axis)"; // fixed calibration for blocks with index >= 16
+        string build_version = "0.822 Kalman (basic axis)"; // 821 - fixed calibration for blocks with index >= 16;
+                                                            // 822 - added separate inertial and gps data check in save_thread()
+                                                            // Now it should work with incomplete sets of data
         bool connected_to_port = false;
         int block_index = 0;
         SerialPort active_com = new SerialPort();
@@ -698,11 +700,21 @@ namespace IMU_Reader
                 str_gps.Write(buf8);
             }
             // Запись даты в конец gps файла
-            int day = (int)date[k2 - 1] / 10000;
-            int month = (int)(date[k2 - 1] - day * 10000) / 100;
-            int year = (int)(2000 + date[k2 - 1] - day * 10000 - month * 100);
-            string datarec = String.Format("{0:d2}.{1:d2}.{2:d4}", day, month, year);
-            str_gps.Write(datarec);
+            bool inertial = false, sattelite = false;
+            if (k > 0)
+                inertial = true;
+            if (k2 > 0)
+            {
+                sattelite = true;
+                int day = (int)date[k2 - 1] / 10000;
+                int month = (int)(date[k2 - 1] - day * 10000) / 100;
+                int year = (int)(2000 + date[k2 - 1] - day * 10000 - month * 100);
+                string datarec = String.Format("{0:d2}.{1:d2}.{2:d4}", day, month, year);
+                str_gps.Write(datarec);
+            }
+
+            if (!inertial || !sattelite)
+                addText("\n" + get_time() + "Неполный комплект данных:\nИнерциальные данные - " + inertial + "\nСпутниковые данные - " + sattelite);
             str_imu.Flush();
             str_imu.Close();
             str_gps.Flush();
